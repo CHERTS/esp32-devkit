@@ -1,0 +1,5 @@
+*.cmd
+*.bat
+*.dll
+Installer-Sign.iss
+Installer-Sign-Test.iss
