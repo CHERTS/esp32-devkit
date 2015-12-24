@@ -73,12 +73,12 @@ if [ $DOWNLOAD -gt 0 ]; then
   wget -c http://ftp.gnu.org/gnu/mpfr/$MPFR.tar.bz2 -P $XTDLP
   echo "MPC"
   wget -c http://ftp.gnu.org/gnu/mpc/$MPC.tar.gz -P $XTDLP
-  echo "GCC"
-  wget -c http://dl.programs74.ru/get.php?file=esp32-$GCC -P $XTDLP -O $GCC.tar.gz
-  echo "Newlib"
-  wget -c http://dl.programs74.ru/get.php?file=esp32-$NEWLIB -P $XTDLP -O $NEWLIB.tar.gz
   echo "Binutils"
-  wget -c http://dl.programs74.ru/get.php?file=esp32-$BINUTILS -P $XTDLP -O $BINUTILS.tar.gz
+  wget -c http://dl.programs74.ru/get.php?file=esp32-$BINUTILS -O $XTDLP/$BINUTILS.tar.gz
+  echo "Newlib"
+  wget -c http://dl.programs74.ru/get.php?file=esp32-$NEWLIB -O $XTDLP/$NEWLIB.tar.gz
+  echo "GCC"
+  wget -c http://dl.programs74.ru/get.php?file=esp32-$GCC -O $XTDLP/$GCC.tar.gz
 
 fi
 
