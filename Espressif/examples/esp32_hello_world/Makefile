@@ -18,6 +18,102 @@ XTENSA_TOOLS_ROOT ?= c:/Espressif/xtensa-esp108-elf/bin
 SDK_BASE	?= c:/Espressif/ESP32_RTOS_SDK
 SDK_TOOLS	?= c:/Espressif/utils
 
+# esptool path and port
+ESPTOOL ?= $(SDK_TOOLS)/esptool_esp32.exe
+ESPPORT ?= COM3
+# Baud rate for programmer
+BAUD ?= 256000
+
+# SPI_SPEED = 40, 26, 20, 80
+SPI_SPEED ?= 40
+# SPI_MODE: qio, qout, dio, dout
+SPI_MODE ?= qio
+# SPI_SIZE_MAP
+# 0 : 512 KB (256 KB + 256 KB)
+# 1 : 256 KB
+# 2 : 1024 KB (512 KB + 512 KB)
+# 3 : 2048 KB (512 KB + 512 KB)
+# 4 : 4096 KB (512 KB + 512 KB)
+# 5 : 2048 KB (1024 KB + 1024 KB)
+# 6 : 4096 KB (1024 KB + 1024 KB)
+SPI_SIZE_MAP ?= 0
+
+ifeq ($(SPI_SPEED), 26.7)
+    freqdiv = 1
+    flashimageoptions = -ff 26m
+else
+    ifeq ($(SPI_SPEED), 20)
+        freqdiv = 2
+        flashimageoptions = -ff 20m
+    else
+        ifeq ($(SPI_SPEED), 80)
+            freqdiv = 15
+            flashimageoptions = -ff 80m
+        else
+            freqdiv = 0
+            flashimageoptions = -ff 40m
+        endif
+    endif
+endif
+
+ifeq ($(SPI_MODE), QOUT)
+    mode = 1
+    flashimageoptions += -fm qout
+else
+    ifeq ($(SPI_MODE), DIO)
+		mode = 2
+		flashimageoptions += -fm dio
+    else
+        ifeq ($(SPI_MODE), DOUT)
+            mode = 3
+            flashimageoptions += -fm dout
+        else
+            mode = 0
+            flashimageoptions += -fm qio
+        endif
+    endif
+endif
+
+ifeq ($(SPI_SIZE_MAP), 1)
+  size_map = 1
+  flash = 256
+  flashimageoptions += -fs 2m
+else
+  ifeq ($(SPI_SIZE_MAP), 2)
+    size_map = 2
+    flash = 1024
+    flashimageoptions += -fs 8m
+  else
+    ifeq ($(SPI_SIZE_MAP), 3)
+      size_map = 3
+      flash = 2048
+      flashimageoptions += -fs 16m
+    else
+      ifeq ($(SPI_SIZE_MAP), 4)
+		size_map = 4
+		flash = 4096
+		flashimageoptions += -fs 32m
+      else
+        ifeq ($(SPI_SIZE_MAP), 5)
+          size_map = 5
+          flash = 2048
+          flashimageoptions += -fs 16m
+        else
+          ifeq ($(SPI_SIZE_MAP), 6)
+            size_map = 6
+            flash = 4096
+            flashimageoptions += -fs 32m
+          else
+            size_map = 0
+            flash = 512
+            flashimageoptions += -fs 4m
+          endif
+        endif
+      endif
+    endif
+  endif
+endif
+
 # name for the target project
 TARGET = app
 
@@ -123,7 +219,7 @@ $(FW_BASE):
 	$(Q) mkdir -p $@
 
 flash: all
-	$(vecho) "Please run $(SDK_TOOLS)/ESP31_FLASH_DOWNLOAD_TOOL_V1.0.1/ESP31_FLASH_DOWNLOAD_TOOL_V1.0.1.exe burn firmware in ESP32 board."
+	$(ESPTOOL) -p $(ESPPORT) -b $(BAUD) write_flash $(flashimageoptions) 0x00000 $(SDK_BASE)/bin/boot.bin 0x04000 $(FW_BASE)/irom1.bin 0x40000 $(FW_BASE)/irom0_flash.bin 0xFC000 $(SDK_BASE)/bin/blank.bin
 
 rebuild: clean all
 
