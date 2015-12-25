@@ -78,35 +78,42 @@ ifeq ($(SPI_SIZE_MAP), 1)
   size_map = 1
   flash = 256
   flashimageoptions += -fs 2m
+  blankaddr = 0xFC000
 else
   ifeq ($(SPI_SIZE_MAP), 2)
     size_map = 2
     flash = 1024
     flashimageoptions += -fs 8m
+    blankaddr = 0xFE000
   else
     ifeq ($(SPI_SIZE_MAP), 3)
       size_map = 3
       flash = 2048
       flashimageoptions += -fs 16m
+      blankaddr = 0x1FE000
     else
       ifeq ($(SPI_SIZE_MAP), 4)
 		size_map = 4
 		flash = 4096
 		flashimageoptions += -fs 32m
+                blankaddr = 0x3FE000
       else
         ifeq ($(SPI_SIZE_MAP), 5)
           size_map = 5
           flash = 2048
           flashimageoptions += -fs 16m
+          blankaddr = 0x1FE000
         else
           ifeq ($(SPI_SIZE_MAP), 6)
             size_map = 6
             flash = 4096
             flashimageoptions += -fs 32m
+            blankaddr = 0x3FE000
           else
             size_map = 0
             flash = 512
             flashimageoptions += -fs 4m
+            blankaddr = 0x7E000
           endif
         endif
       endif
@@ -200,9 +207,10 @@ $(TARGET_OUT): $(APP_AR)
 	$(Q) rm eagle.app.v7.*
 	$(vecho) "------------------------------------------------------------------------------"
 	$(vecho) "Generate related files successully in folder $(FW_BASE)"	
-	$(vecho) "$(SDK_BASE)/bin/boot.bin ------------------>0x00000"
+	$(vecho) "boot.bin ------------------>0x00000"
 	$(vecho) "irom1.bin ----------------->0x04000" 
 	$(vecho) "irom0_flash.bin ----------->0x40000"
+	$(vecho) "blank.bin ----------------->256K-0xFC000, 1MB-0xFE000, 2MB-0x1FE000"
 	$(vecho) "user.ota ------------------>(used for OTA)"
 	$(vecho) "Done"
 
@@ -219,7 +227,7 @@ $(FW_BASE):
 	$(Q) mkdir -p $@
 
 flash: all
-	$(ESPTOOL) -p $(ESPPORT) -b $(BAUD) write_flash $(flashimageoptions) 0x00000 $(SDK_BASE)/bin/boot.bin 0x04000 $(FW_BASE)/irom1.bin 0x40000 $(FW_BASE)/irom0_flash.bin 0xFC000 $(SDK_BASE)/bin/blank.bin
+	$(ESPTOOL) -p $(ESPPORT) -b $(BAUD) write_flash $(flashimageoptions) 0x00000 $(SDK_BASE)/bin/boot.bin 0x04000 $(FW_BASE)/irom1.bin 0x40000 $(FW_BASE)/irom0_flash.bin $(blankaddr) $(SDK_BASE)/bin/blank.bin
 
 rebuild: clean all
 
