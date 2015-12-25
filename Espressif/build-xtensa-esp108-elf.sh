@@ -3,7 +3,7 @@
 # Last edit: 20/11/2014
 #
 # Modified: Mikhail Grigorev
-# Last edit: 23/12/2015
+# Last edit: 25/12/2015
 #
 # You will need the following mingw32/64 or equivalent linux packages to build it:
 # msys gcc msys-coreutils msys-wget msys-autoconf msys-automake msys-mktemp
@@ -31,10 +31,10 @@ NEWLIB="newlib-2.0.0"
 
 DOWNLOAD=1
 EXTRACT=1
+BASELIBS=1
 RECONF=1
 REBUILD=1
 REINSTALL=1
-BASELIBS=1
 
 while true ; do
     case "$1" in
@@ -245,6 +245,37 @@ if [ $REINSTALL -gt 0 -o ! -f .installed ]; then
   rm -rf .installed
   make install
   touch .installed
+fi
+
+if [ -d "$XTTC/$TARGET/bin/" ]; then
+  if [ -f "$XTTC/bin/$TARGET-g++.exe" ]; then
+    cp "$XTTC/bin/$TARGET-g++.exe" "$XTTC/$TARGET/bin/g++.exe"
+  fi
+  if [ -f "$XTTC/bin/$TARGET-gcc.exe" ]; then
+    cp "$XTTC/bin/$TARGET-gcc.exe" "$XTTC/$TARGET/bin/gcc.exe"
+  fi
+  if [ -f "$XTTC/bin/$TARGET-c++.exe" ]; then
+    cp "$XTTC/bin/$TARGET-c++.exe" "$XTTC/$TARGET/bin/c++.exe"
+  fi
+fi
+
+if [ -d "$MINGW_PATH/bin/" ]; then
+  if [ -d "$XTTC/bin/" ]; then
+    if [ -f "$MINGW_PATH/bin/libgcc_s_dw2-1.dll" ]; then
+      cp "$MINGW_PATH/bin/libgcc_s_dw2-1.dll" "$XTTC/bin/"
+    fi
+    if [ -f "$MINGW_PATH/bin/zlib1.dll" ]; then
+      cp "$MINGW_PATH/bin/zlib1.dll" "$XTTC/bin/"
+    fi
+  fi
+  if [ -d "$XTTC/$TARGET/bin/" ]; then
+    if [ -f "$MINGW_PATH/bin/libgcc_s_dw2-1.dll" ]; then
+      cp "$MINGW_PATH/bin/libgcc_s_dw2-1.dll" "$XTTC/$TARGET/bin/"
+    fi
+    if [ -f "$MINGW_PATH/bin/zlib1.dll" ]; then
+      cp "$MINGW_PATH/bin/zlib1.dll" "$XTTC/$TARGET/bin/"
+    fi
+  fi
 fi
 
 echo "Done!"
