@@ -1,5 +1,5 @@
 ﻿;InnoSetupVersion=5.5.0
-#define DevKitVersion "0.0.1"
+#define DevKitVersion "0.0.2"
 #define DevKitSDKVersion "1.1.0"
 #define DevKitAppName "Unofficial Development Kit for Espressif ESP32"
 #define DevKitAppURL "http://www.programs74.ru"
@@ -99,7 +99,10 @@ Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
 Type: files; Name: "{app}\utils\gen_appbin_esp32.exe"; Components: utils
 Type: files; Name: "{app}\utils\gen_appbin_esp32.py"; Components: utils
 Type: files; Name: "{app}\utils\gen_appbin_esp32-build.py"; Components: utils
-Type: filesandordirs; Name: "{app}\utils\ESP31_FLASH_DOWNLOAD_TOOL_V1.0.1\*"; Components: utils
+Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
+Type: files; Name: "{app}\utils\esptool_esp32.exe"; Components: utils
+Type: files; Name: "{app}\utils\esptool_esp32.py"; Components: utils
+Type: files; Name: "{app}\utils\esptool_esp32-build.py"; Components: utils
 Type: filesandordirs; Name: "{app}\examples\esp32_hello_world\*"; Components: examples
 Type: filesandordirs; Name: "{app}\ESP32_RTOS_SDK\*"; Components: sdk
 Type: files; Name: "{app}\Command line Unofficial Development Kit for Espressif ESP32.lnk"; Components: utils; Languages: english turkish
@@ -119,9 +122,9 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 
 [Messages]
 ;BeveledLabel=Espressif ESP32 Developer Kit
-english.WelcomeLabel2=Now on your PC will be installed {#DevKitAppName}. The DevKit includes a unofficial compiler for SoC Xtensa LX108 and ESP32 RTOS SDK v{#DevKitSDKVersion}, utilities and examples of writing firmware.
-russian.WelcomeLabel2=Сейчас на Ваш компьютер будет установлен {#DevKitAppName}. В состав комплекта входят неофициальный компилятор для SoC Xtensa LX108, ESP32 RTOS SDK v{#DevKitSDKVersion}, набор утилит и примеры написания прошивок.
-turkish.WelcomeLabel2=Bu kurulum paketi ile bilgisayarınıza {#DevKitAppName} yüklenecek . Bu paket SoC Xtensa LX108 için derleyici, ESP32 RTOS SDK v{#DevKitSDKVersion} ve yardımcı örnekler içerir.
+english.WelcomeLabel2=Now on your PC will be installed {#DevKitAppName}. The DevKit includes a unofficial compiler for SoC Xtensa L108 and ESP32 RTOS SDK v{#DevKitSDKVersion}, utilities and examples of writing firmware.
+russian.WelcomeLabel2=Сейчас на Ваш компьютер будет установлен {#DevKitAppName}. В состав комплекта входят неофициальный компилятор для SoC Xtensa L108, ESP32 RTOS SDK v{#DevKitSDKVersion}, набор утилит и примеры написания прошивок.
+turkish.WelcomeLabel2=Bu kurulum paketi ile bilgisayarınıza {#DevKitAppName} yüklenecek . Bu paket SoC Xtensa L108 için derleyici, ESP32 RTOS SDK v{#DevKitSDKVersion} ve yardımcı örnekler içerir.
 
 [CustomMessages]
 english.UninstallProgram=Uninstall %1
@@ -148,7 +151,7 @@ Name: "custom"; Description: "Custom installation"; Flags: iscustom
 ;Flags: exclusive - можно выбрать только одно из exclusive
 
 [Components]
-Name: compiler; Description: GCC Xtensa LX108; Types: full compact custom
+Name: compiler; Description: GCC Xtensa L108; Types: full compact custom
 Name: sdk; Description: "Espressif ESP32 RTOS SDK"; Types: full compact custom; Languages: english
 Name: docs; Description: Documentation; Types: full custom; Languages: english
 Name: utils; Description: Utilites; Types: full compact custom; Languages: english
