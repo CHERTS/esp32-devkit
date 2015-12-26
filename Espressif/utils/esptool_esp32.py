@@ -78,6 +78,7 @@ class ESPROM:
         # sets), shouldn't matter for other platforms/drivers. See
         # https://github.com/themadinventor/esptool/issues/44#issuecomment-107094446
         self._port.baudrate = baud
+        self._first_flash_after_reset = True
 
     """ Read bytes from the serial port while performing SLIP unescaping """
     def read(self, length = 1):
@@ -142,17 +143,19 @@ class ESPROM:
     def connect(self):
         print 'Connecting...'
 
-        for _ in xrange(4):
+        for i in xrange(4):
+            invert = (i % 2 == 1)
             # issue reset-to-bootloader:
             # RTS = either CH_PD or nRESET (both active low = chip in reset)
             # DTR = GPIO0 (active low = boot to flasher)
-            self._port.setDTR(False)
-            self._port.setRTS(True)
+
+            self._port.setRTS(True ^ invert)   # RST -> 0
+            self._port.setDTR(True ^ invert)   # GPIO0 -> 0
             time.sleep(0.05)
-            self._port.setDTR(True)
-            self._port.setRTS(False)
-            time.sleep(0.05)
-            self._port.setDTR(False)
+            self._port.setRTS(False ^ invert)  # RST -> 1
+            time.sleep(0.1)
+
+            self._first_flash_after_reset = True
 
             self._port.timeout = 0.3 # worst-case latency timer should be 255ms (probably <20ms)
             for _ in xrange(4):
@@ -164,6 +167,7 @@ class ESPROM:
                     return
                 except:
                     time.sleep(0.05)
+        self._port.setDTR(False ^ invert)   # GPIO0 -> 1
         raise Exception('Failed to connect')
 
     """ Read memory address in target """
@@ -217,13 +221,23 @@ class ESPROM:
         #else:
             #erase_size = (num_sectors - head_sectors) * sector_size
         erase_size = size
-        
+
         print "Erase size %x num_blocks %x offset %x" % (erase_size, num_blocks, offset)
-        self._port.timeout = 90
-        if self.command(ESPROM.ESP_FLASH_BEGIN,
-                struct.pack('<IIII', erase_size, num_blocks, ESPROM.ESP_FLASH_BLOCK, offset))[1] != "\0\0":
+        while True:
+            self._port.timeout = 90
+            r = self.command(ESPROM.ESP_FLASH_BEGIN,
+                        struct.pack('<IIII', erase_size, num_blocks, ESPROM.ESP_FLASH_BLOCK, offset))
+            self._port.timeout = old_tmo
+            if r[1] == "\0\0": return
+            # ESP32 workaround: after reset first flash_begin will most likely fail.
+            # In this case bootloader returns r[0] == 0 and second byte is non-zero.
+            # It is not enough to retry just FLASH_BEGIN, but sync + retry works.
+            if r[1][0] == "\0" and self._first_flash_after_reset:
+                print "FLASH_BEGIN failed, applying ESP32 workaround..."
+                self.sync()
+                self._first_flash_after_reset = False
+                continue
             raise Exception('Failed to enter Flash download mode')
-        self._port.timeout = old_tmo
 
     """ Write block to flash """
     def flash_block(self, data, seq):
@@ -439,7 +453,7 @@ if __name__ == '__main__':
     parser.add_argument(
             '--port', '-p',
             help = 'Serial port device',
-            default = '/dev/ttyUSB0')
+            default = 'COM3')
 
     parser.add_argument(
             '--baud', '-b',
