@@ -1,5 +1,5 @@
 ﻿;InnoSetupVersion=5.5.0
-#define DevKitVersion "0.0.2"
+#define DevKitVersion "0.0.3"
 #define DevKitSDKVersion "1.1.0"
 #define DevKitAppName "Unofficial Development Kit for Espressif ESP32"
 #define DevKitAppURL "http://www.programs74.ru"
