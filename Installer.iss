@@ -92,14 +92,7 @@ Name: "{group}\{cm:UninstallProgram,{#DevKitAppName}}"; Filename: "{uninstallexe
 
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\xtensa-esp108-elf\*"; Components: compiler
-Type: filesandordirs; Name: "{app}\docs\ESP32_MODULE_PCB_LAYOUT\*"; Components: docs
-Type: files; Name: "{app}\docs\ESP32__RTOS_SDK_API Reference__v1.1.0.pdf"; Components: docs
-Type: files; Name: "{app}\docs\ESP32_MODULE_BOM_LIST.pdf"; Components: docs
-Type: files; Name: "{app}\docs\ESP32 PCB Processing Requirement.xls"; Components: docs
-Type: files; Name: "{app}\docs\ESP32-WROOM-03_Specifications_EN_v1.pdf"; Components: docs
-Type: files; Name: "{app}\docs\ESP32 Getting Started Guide for SDK based on FreeRTOS.pdf"; Components: docs
-Type: files; Name: "{app}\docs\ESP32_Specifications_EN_v1.pdf"; Components: docs
-Type: files; Name: "{app}\docs\ESP32_CHIP_Pin_List.xlsx"; Components: docs
+Type: filesandordirs; Name: "{app}\docs\ESP32\*"; Components: docs
 Type: files; Name: "{app}\utils\console_esp32.bat"; Components: utils
 Type: files; Name: "{app}\utils\udkvars_esp32.bat"; Components: utils
 Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
