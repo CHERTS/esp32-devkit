@@ -103,7 +103,7 @@ Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
 Type: files; Name: "{app}\utils\esptool_esp32.exe"; Components: utils
 Type: files; Name: "{app}\utils\esptool_esp32.py"; Components: utils
 Type: files; Name: "{app}\utils\esptool_esp32-build.py"; Components: utils
-Type: filesandordirs; Name: "{app}\examples\esp32_hello_world\*"; Components: examples
+Type: filesandordirs; Name: "{app}\examples\ESP32\*"; Components: examples
 Type: filesandordirs; Name: "{app}\ESP32_RTOS_SDK\*"; Components: sdk
 Type: files; Name: "{app}\Command line Unofficial Development Kit for Espressif ESP32.lnk"; Components: utils; Languages: english turkish
 Type: files; Name: "{app}\Командная строка Unofficial Development Kit for Espressif ESP32.lnk"; Components: utils; Languages: russian
