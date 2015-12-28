@@ -1,5 +1,5 @@
 ﻿;InnoSetupVersion=5.5.0
-#define DevKitVersion "0.0.3"
+#define DevKitVersion "0.0.4"
 #define DevKitSDKVersion "1.1.0"
 #define DevKitAppName "Unofficial Development Kit for Espressif ESP32"
 #define DevKitAppURL "http://www.programs74.ru"
@@ -93,6 +93,9 @@ Name: "{group}\{cm:UninstallProgram,{#DevKitAppName}}"; Filename: "{uninstallexe
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\xtensa-esp108-elf\*"; Components: compiler
 Type: files; Name: "{app}\docs\ESP32__RTOS_SDK_API Reference__v1.1.0.pdf"; Components: docs
+Type: files; Name: "{app}\docs\ESP32_MODULE_BOM_LIST.pdf"; Components: docs
+Type: files; Name: "{app}\docs\ESP32 PCB Processing Requirement.xls"; Components: docs
+Type: filesandordirs; Name: "{app}\docs\ESP32_MODULE_PCB_LAYOUT\*"; Components: docs
 Type: files; Name: "{app}\utils\console_esp32.bat"; Components: utils
 Type: files; Name: "{app}\utils\udkvars_esp32.bat"; Components: utils
 Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
