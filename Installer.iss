@@ -1,5 +1,5 @@
 ﻿;InnoSetupVersion=5.5.0
-#define DevKitVersion "0.0.5"
+#define DevKitVersion "0.0.6"
 #define DevKitSDKVersion "1.1.0"
 #define DevKitAppName "Unofficial Development Kit for Espressif ESP32"
 #define DevKitAppURL "http://www.programs74.ru"
@@ -36,9 +36,11 @@ LicenseFile=license.txt
 
 [Files]
 Source: "Espressif\xtensa-esp108-elf\*"; DestDir: "{app}\xtensa-esp108-elf"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: compiler
-Source: "Espressif\docs\*"; DestDir: "{app}\docs"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: docs
-Source: "Espressif\utils\*"; DestDir: "{app}\utils"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: utils
-Source: "Espressif\examples\*"; DestDir: "{app}\examples"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: examples
+Source: "Espressif\docs\ESP32\*"; DestDir: "{app}\docs\ESP32"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: docs
+Source: "Espressif\utils\ESP32\*"; DestDir: "{app}\utils\ESP32"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: utils
+Source: "Espressif\utils\Terminal.exe"; DestDir: "{app}\utils"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: utils
+Source: "Espressif\utils\esp-reboot.tsc"; DestDir: "{app}\utils"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: utils
+Source: "Espressif\examples\ESP32\*"; DestDir: "{app}\examples\ESP32"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: examples
 Source: "Espressif\ESP32_RTOS_SDK\*"; DestDir: "{app}\ESP32_RTOS_SDK"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: sdk
 Source: "Espressif\Espressif ESP32 web site.url"; DestDir: "{app}"; Flags: ignoreversion
 Source: "Espressif\Espressif web site.url"; DestDir: "{app}"; Flags: ignoreversion
@@ -56,9 +58,9 @@ Source: "InnoCallback.dll"; DestDir: "{tmp}"; Flags: dontcopy
 
 [Dirs]
 Name: "{app}\xtensa-esp108-elf"; Components: compiler
-Name: "{app}\docs"; Components: docs
-Name: "{app}\utils"; Components: utils
-Name: "{app}\examples"; Components: examples
+Name: "{app}\docs\ESP32"; Components: docs
+Name: "{app}\utils\ESP32"; Components: utils
+Name: "{app}\examples\ESP32"; Components: examples
 Name: "{app}\ESP32_RTOS_SDK"; Components: sdk
 
 [Registry]
@@ -93,16 +95,7 @@ Name: "{group}\{cm:UninstallProgram,{#DevKitAppName}}"; Filename: "{uninstallexe
 [UninstallDelete]
 Type: filesandordirs; Name: "{app}\xtensa-esp108-elf\*"; Components: compiler
 Type: filesandordirs; Name: "{app}\docs\ESP32\*"; Components: docs
-Type: files; Name: "{app}\utils\console_esp32.bat"; Components: utils
-Type: files; Name: "{app}\utils\udkvars_esp32.bat"; Components: utils
-Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
-Type: files; Name: "{app}\utils\gen_appbin_esp32.exe"; Components: utils
-Type: files; Name: "{app}\utils\gen_appbin_esp32.py"; Components: utils
-Type: files; Name: "{app}\utils\gen_appbin_esp32-build.py"; Components: utils
-Type: files; Name: "{app}\utils\py2exe_gen_appbin_esp32.cmd"; Components: utils
-Type: files; Name: "{app}\utils\esptool_esp32.exe"; Components: utils
-Type: files; Name: "{app}\utils\esptool_esp32.py"; Components: utils
-Type: files; Name: "{app}\utils\esptool_esp32-build.py"; Components: utils
+Type: filesandordirs; Name: "{app}\utils\ESP32\*"; Components: utils
 Type: filesandordirs; Name: "{app}\examples\ESP32\*"; Components: examples
 Type: filesandordirs; Name: "{app}\ESP32_RTOS_SDK\*"; Components: sdk
 Type: files; Name: "{app}\Command line Unofficial Development Kit for Espressif ESP32.lnk"; Components: utils; Languages: english turkish
@@ -121,7 +114,6 @@ Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 
 [Messages]
-;BeveledLabel=Espressif ESP32 Developer Kit
 english.WelcomeLabel2=Now on your PC will be installed {#DevKitAppName}. The DevKit includes a unofficial compiler for SoC Xtensa L108 and ESP32 RTOS SDK v{#DevKitSDKVersion}, utilities and examples of writing firmware.
 russian.WelcomeLabel2=Сейчас на Ваш компьютер будет установлен {#DevKitAppName}. В состав комплекта входят неофициальный компилятор для SoC Xtensa L108, ESP32 RTOS SDK v{#DevKitSDKVersion}, набор утилит и примеры написания прошивок.
 turkish.WelcomeLabel2=Bu kurulum paketi ile bilgisayarınıza {#DevKitAppName} yüklenecek . Bu paket SoC Xtensa L108 için derleyici, ESP32 RTOS SDK v{#DevKitSDKVersion} ve yardımcı örnekler içerir.
@@ -137,7 +129,6 @@ english.CUSTOMINSTALL=Custom installation
 russian.CUSTOMINSTALL=Выборочная установка
 turkish.CUSTOMINSTALL=Özel yükleme
 
-;Flags: iscustom можно поставить только у одного типа, поэтому ниже на Pascal Script написан хак, как локализовать Custom installation 
 [Types]
 Name: "full"; Description: "Full installation (Compiler, SDK, utils, docs and examples)"; Languages: english
 Name: "compact"; Description: "Compact installation (Compiler, SDK, and utils)"; Languages: english
@@ -146,9 +137,6 @@ Name: "compact"; Description: "Компактная установка (Комп
 Name: "full"; Description: "Tam kurulum (Derleyici, SDK, utils, dokümanlar ve örnekler)"; Languages: turkish
 Name: "compact"; Description: "Kompakt kurulum (Derleyici, SDK ve utils)"; Languages: turkish
 Name: "custom"; Description: "Custom installation"; Flags: iscustom
-
-;Flags: fixed - значит нельзя отключить!
-;Flags: exclusive - можно выбрать только одно из exclusive
 
 [Components]
 Name: compiler; Description: GCC Xtensa L108; Types: full compact custom
@@ -345,5 +333,49 @@ begin
       DonatePanel.Free;
       DonatePanel:=nil;
     end;
+  end;
+end;
+
+function GetUninstallString: string;
+var
+  sUnInstPath: String;
+  sUnInstallString: String;
+begin
+  Result := '';
+  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\{#DevKitAppName}_is1');
+  sUnInstallString := '';
+  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+  Result := sUnInstallString;
+end;
+
+function IsUpgrade: Boolean;
+begin
+  Result := (GetUninstallString() <> '');
+end;
+
+function InitializeSetup: Boolean;
+var
+  V: Integer;
+  iResultCode: Integer;
+  sUnInstallString: string;
+begin
+  Result := True;
+  if RegValueExists(HKEY_LOCAL_MACHINE,'Software\Microsoft\Windows\CurrentVersion\Uninstall\{#DevKitAppName}_is1', 'UninstallString') then
+  begin
+    if ActiveLanguage = 'russian' then 
+      V := MsgBox(ExpandConstant('Была найдена более старая версия {#DevKitAppName}. Для продолжения установки старую версию необходимо удалить. Согласны?'), mbInformation, MB_YESNO)
+    else
+      V := MsgBox(ExpandConstant('An old version of {#DevKitAppName} was detected. Do you want to uninstall it?'), mbInformation, MB_YESNO);
+    if V = IDYES then
+    begin
+      sUnInstallString := GetUninstallString();
+      sUnInstallString :=  RemoveQuotes(sUnInstallString);
+      Exec(ExpandConstant(sUnInstallString), '', '', SW_SHOW, ewWaitUntilTerminated, iResultCode);
+      Result := True; // Продолжение установки новой версии после удаления старой
+      //Exit; // Выход из установки новой версии после удаления старой
+    end
+    else
+      Result := False; // Если старая версия не удалена, то выход из инсталлятора
   end;
 end;
