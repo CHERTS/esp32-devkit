@@ -16,7 +16,7 @@ XTENSA_TOOLS_ROOT ?= c:/Espressif/xtensa-esp108-elf/bin
 
 # base directory of the ESP32 SDK package, absolute
 SDK_BASE	?= c:/Espressif/ESP32_RTOS_SDK
-SDK_TOOLS	?= c:/Espressif/utils
+SDK_TOOLS	?= c:/Espressif/utils/ESP32
 
 # esptool path and port
 ESPTOOL ?= $(SDK_TOOLS)/esptool_esp32.exe
