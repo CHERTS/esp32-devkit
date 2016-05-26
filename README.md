@@ -8,7 +8,7 @@ Unofficial Development Kit for Espressif ESP32
 <b>The kit includes the following components and tools:</b><br>
 
 1. Unofficial GCC compiler for SoC Xtensa L108.<br>
-2. Official Espressif ESP32 RTOS SDK v1.1.0<br>
+2. Official Espressif ESP32 RTOS SDK v2.0.0<br>
 3. Documentation for SoC ESP32.<br>
 4. Examples in the firmware source code in C language.<br>
 5. Additional tools for working with boards based on the ESP32.<br>
