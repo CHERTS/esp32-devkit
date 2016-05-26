@@ -29,9 +29,9 @@ GCC="gcc-5.1.0"
 BINUTILS="binutils-2.25"
 NEWLIB="newlib-2.0.0"
 
-DOWNLOAD=1
-EXTRACT=1
-BASELIBS=1
+DOWNLOAD=0
+EXTRACT=0
+BASELIBS=0
 RECONF=1
 REBUILD=1
 REINSTALL=1
@@ -197,7 +197,7 @@ echo "Building first stage GCC..."
 cd $XTDLP/$GCC/build-1
 if [ $RECONF -gt 0 -o ! -f .configured ]; then
   rm -f .configured
-  ../configure --prefix=$XTTC --target=$TARGET --enable-multilib --enable-languages=c --with-newlib --disable-nls --disable-shared --disable-threads --with-gnu-as --with-gnu-ld --with-gmp=$XTBP/gmp --with-mpfr=$XTBP/mpfr --with-mpc=$XTBP/mpc  --disable-libssp --without-headers --disable-__cxa_atexit
+  ../configure --prefix=$XTTC --target=$TARGET --enable-multilib --enable-languages=c --with-newlib --disable-nls --disable-shared --disable-threads --with-gnu-as --with-gnu-ld --with-gmp=$XTBP/gmp --with-mpfr=$XTBP/mpfr --with-mpc=$XTBP/mpc  --disable-libssp --without-headers --disable-__cxa_atexit --enable-decimal-float=yes
   touch .configured
 fi
 if [ $REBUILD -gt 0 -o ! -f .built ]; then
@@ -233,7 +233,7 @@ echo "Building final GCC..."
 cd $XTDLP/$GCC/build-2
 if [ $RECONF -gt 0 -o ! -f .configured ]; then
   rm -f .configured
-  ../configure --prefix=$XTTC --target=$TARGET --enable-multilib --disable-nls --disable-shared --disable-threads --with-gnu-as --with-gnu-ld --with-gmp=$XTBP/gmp --with-mpfr=$XTBP/mpfr --with-mpc=$XTBP/mpc --enable-languages=c,c++ --with-newlib --disable-libssp --disable-__cxa_atexit
+  ../configure --prefix=$XTTC --target=$TARGET --enable-multilib --disable-nls --disable-shared --disable-threads --with-gnu-as --with-gnu-ld --with-gmp=$XTBP/gmp --with-mpfr=$XTBP/mpfr --with-mpc=$XTBP/mpc --enable-languages=c,c++ --with-newlib --disable-libssp --disable-__cxa_atexit --enable-decimal-float=yes
   touch .configured
 fi
 if [ $REBUILD -gt 0 -o ! -f .built ]; then
