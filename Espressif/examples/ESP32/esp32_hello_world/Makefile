@@ -2,9 +2,9 @@
 #
 # ESP32 Root Level Makefile
 #
-# Version 1.0
+# Version 2.0
 #
-# (c) 2015 by CHERTS <sleuthhound@gmail.com>
+# (c) 2015-2016 by CHERTS <sleuthhound@gmail.com>
 #
 #############################################################
 
@@ -20,11 +20,14 @@ XTENSA_TOOLS_ROOT ?= c:/Espressif/xtensa-esp108-elf/bin
 SDK_BASE	?= c:/Espressif/ESP32_RTOS_SDK
 SDK_TOOLS	?= c:/Espressif/utils/ESP32
 
+# esptool path and port
+ESP_TOOL ?= $(SDK_TOOLS)/esptool_esp32.exe
+
 #FLAVOR = release
 FLAVOR = debug
 
-# esptool path and port
-ESP_TOOL ?= $(SDK_TOOLS)/esptool_esp32.exe
+# Verbose build output
+VERBOSE = 0
 
 ESP_COMPILE_APP_CPU ?= 0
 ESP_COMBINE_APP_CPU_BIN ?= 0
@@ -72,6 +75,14 @@ else
 	endif
 endif
 
+ifeq ($(FLAVOR),debug)
+    TARGET_LDFLAGS += -g -O2
+endif
+
+ifeq ($(FLAVOR),release)
+    TARGET_LDFLAGS += -g -O0
+endif
+
 # name for the target project
 TARGET = eagle
 
@@ -82,16 +93,9 @@ EXTRA_INCDIR = include $(SDK_BASE)/extra_include $(SDK_BASE)/third_party/include
 # libraries used in this project, mainly provided by the SDK
 LIBS = c gcc hal m crypto freertos lwip main net80211 phy pp rtc wpa
 
-ifeq ($(FLAVOR),debug)
-    TARGET_LDFLAGS += -g -O2
-endif
-
-ifeq ($(FLAVOR),release)
-    TARGET_LDFLAGS += -g -O0
-endif
-
 # compiler flags using during compilation of source files
-CFLAGS = -Os -std=gnu90 -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -mno-serialize-volatile -D__ets__ -DICACHE_FLASH
+CFLAGS += $(TARGET_LDFLAGS)
+CFLAGS += -Os -std=gnu90 -Wpointer-arith -Wundef -Werror -Wl,-EL -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -mno-serialize-volatile -D__ets__ -DICACHE_FLASH
 
 # linker flags used to generate the main object file
 LDFLAGS += $(TARGET_LDFLAGS)
@@ -114,8 +118,8 @@ SRC_DIR		:= $(MODULES)
 BUILD_DIR	:= $(addprefix $(BUILD_BASE)/,$(MODULES))
 SDK_LIBDIR	:= $(addprefix $(SDK_BASE)/,$(SDK_LIBDIR))
 SDK_INCDIR	:= $(addprefix -I$(SDK_BASE)/,$(SDK_INCDIR))
-SRC		:= $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.c))
-OBJ		:= $(patsubst %.c,$(BUILD_BASE)/%.o,$(SRC))
+SRC			:= $(foreach sdir,$(SRC_DIR),$(wildcard $(sdir)/*.c))
+OBJ			:= $(patsubst %.c,$(BUILD_BASE)/%.o,$(SRC))
 LIBS		:= $(addprefix -l,$(LIBS))
 APP_AR		:= $(addprefix $(BUILD_BASE)/,$(TARGET)_app.a)
 TARGET_OUT	:= $(addprefix $(BUILD_BASE)/,$(TARGET).out)
