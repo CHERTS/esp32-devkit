@@ -1,0 +1,16 @@
+ESP32_RTOS_SDK_v3.0.0_16_07_24 Release Note
+---------------------------------------------
+- update lwip to v1.5.0;
+- update smartconfig to v2.5.4;
+- system parameter structure changed, need to flash blank.bin to system parameter sector;
+- support set phy mode for softap/station seperately;
+- support Rx/Tx AMPDU;
+- support 802.11 regdomain;
+- support 802.11 QoS;
+- optimize throughput;
+- modify sdk internal framework;
+- modify esp_*.h headers dependencies;
+- add libphyrom.a and liblwip_dep.a;
+- update documents;
+- update gen_appbin.py;
+- bug fix;
