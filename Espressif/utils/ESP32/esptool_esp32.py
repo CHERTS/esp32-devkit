@@ -670,7 +670,7 @@ def main():
     parser.add_argument(
         '--port', '-p',
         help='Serial port device',
-        default='COM3')
+        default='/dev/ttyUSB0')
 
     parser.add_argument(
         '--baud', '-b',
