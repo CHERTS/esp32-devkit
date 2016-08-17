@@ -1,6 +1,9 @@
 Changelog:
 ----------
 
+v1.0.0 (17.08.2016):
+* Update RTOS SDK v3.0.0 (folder ESP32_RTOS_SDK);
+
 v0.0.7 (BETA):
 * xtensa-esp108-elf rebuilt to adding option --enable-decimal-float=yes
 * Added utility esptool-ck.exe
